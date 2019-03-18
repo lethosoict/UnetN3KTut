@@ -33,10 +33,17 @@ public class Server : MonoBehaviour
 
         HostTopology topo = new HostTopology(cc, MAX_USER);
 
+        // Server code only
         hostId = NetworkTransport.AddHost(topo, PORT, null);
         webHostId = NetworkTransport.AddWebsocketHost(topo, WEB_PORT, null);
 
         Debug.Log(string.Format("Openning connection on port {0} and web_port {1}", PORT, WEB_PORT));
         isStarted = true;
+    }
+
+    public void Shutdown()
+    {
+        isStarted = false;
+        NetworkTransport.Shutdown();
     }
 }

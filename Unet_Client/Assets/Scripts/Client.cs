@@ -26,6 +26,7 @@ public class Client : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         Init();
     }
+
     #endregion
 
     public void Init()
@@ -60,5 +61,6 @@ public class Client : MonoBehaviour
         isStarted = false;
         NetworkTransport.Shutdown();
     }
+    
 }
 

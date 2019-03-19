@@ -69,7 +69,7 @@ public class Server : MonoBehaviour
         NetworkEventType type = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer ,recBuffer.Length, out dataSize, out error);
 
         switch (type)
-        {
+        {          
             case NetworkEventType.Nothing:
                 break;
             case NetworkEventType.ConnectEvent:

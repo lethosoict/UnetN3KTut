@@ -8,6 +8,7 @@ public class Client : MonoBehaviour
     private const int MAX_USER = 100;
     private const int PORT = 26000;
     private const int WEB_PORT = 26001;
+    private const int BYTE_SIZE = 1024;
     private const string SERVER_IP = "127.0.0.1";
 
     private byte reliableChannel;
@@ -25,6 +26,11 @@ public class Client : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         Init();
+    }
+
+    private void Update()
+    {
+        UpdateMessagePump();
     }
 
     #endregion
@@ -61,6 +67,38 @@ public class Client : MonoBehaviour
         isStarted = false;
         NetworkTransport.Shutdown();
     }
-    
+   
+    public void UpdateMessagePump()
+    {
+        if (!isStarted)
+            return;
+
+        int recHostId;
+        int connectionId;
+        int channelId;
+
+        byte[] recBuffer = new byte[BYTE_SIZE];
+        int dataSize;
+
+        NetworkEventType type = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, recBuffer.Length, out dataSize, out error);
+        switch (type)
+        {
+            case NetworkEventType.Nothing:
+                break;
+            case NetworkEventType.ConnectEvent:
+                Debug.Log("We have connected to the server!");
+                break;
+            case NetworkEventType.DisconnectEvent:
+                Debug.Log("We have been disconnected!");
+                break;
+            case NetworkEventType.DataEvent:
+                Debug.Log("Data");
+                break;
+            default:
+            case NetworkEventType.BroadcastEvent:
+                Debug.Log("Unexpected network event type");
+                break;
+        }
+    }
 }
 
